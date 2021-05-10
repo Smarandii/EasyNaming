@@ -72,16 +72,19 @@ CMYK_PROP = MockupsProperties("CMYK", "Исходники", "Печать")
 
 
 if __name__ == "__main__":
+	try:
+		city_name = input("input city\project name: ")
+		projects_folder = input("input path to folder where I should create project directory: ")
+		CMYK_PROP.n_mockups = int(input("input number of cmyk mockups: "))
+		RGB_PROP.n_mockups = int(input("input number of rgb mockups: "))
 
-	city_name = input("input city\project name: ")
-	projects_folder = input("input path to folder where I should create project directory: ")
-	CMYK_PROP.n_mockups = int(input("input number of cmyk mockups: "))
-	RGB_PROP.n_mockups = int(input("input number of rgb mockups: "))
-	
-	pp = ProjectProperties(city_name, projects_folder, CMYK_PROP.n_mockups, RGB_PROP.n_mockups)
+		pp = ProjectProperties(city_name, projects_folder, CMYK_PROP.n_mockups, RGB_PROP.n_mockups)
 
-	nh = NamingHelper(pp)
-	nh.get_mockup_names(CMYK_PROP)
-	nh.get_mockup_names(RGB_PROP)
-	nh.create_mockups(RGB_PROP)
-	nh.create_mockups(CMYK_PROP)
+		nh = NamingHelper(pp)
+		nh.get_mockup_names(CMYK_PROP)
+		nh.get_mockup_names(RGB_PROP)
+		nh.create_mockups(RGB_PROP)
+		nh.create_mockups(CMYK_PROP)
+	except Exception as e:
+		print(e.args)
+		input()
