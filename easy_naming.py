@@ -1,5 +1,7 @@
 import os
 
+DESKTOP_FOLDER = os.path.join(str(os.getenv('USERPROFILE')), 'Desktop')
+
 class ProjectProperties:
 	def __init__(self, city_name, project_folder, n_cmyk_mockups, n_rgb_mockups):
 		self.city_name = city_name
@@ -8,20 +10,21 @@ class ProjectProperties:
 		self.n_rgb_mockups = n_rgb_mockups
 
 
+
 class MockupsProperties:
 	def __init__(self, color_scheme, initial_f_n, export_f_n):
 		self.color_scheme = color_scheme
 		self.initial_f_n = initial_f_n
 		self.export_f_n = export_f_n
 		self.n_mockups = 0
-		self.mockup_files = ["Техническое задание.pdf", "preview.png"]
+		self.mockup_files = ["preview.png"]
 		self.mockup_names = []
 		if color_scheme == "RGB":
-			self.export_files = ["72ppi.jpg", "300ppi.jpg"]
-			self.initial_files = ["Illustrator 2020.ai", "Illustrator 10.ai", "Project.eps"]
+			self.export_files = ["72ppi.jpg"]
+			self.initial_files = ["Illustrator 2020.ai"]
 		else:
-			self.initial_files = ["Illustrator 2020.ai", "Illustrator 10.ai", "Project.eps"]
-			self.export_files = ["72ppi lzw.tiff", "300ppi lzw.tiff"]
+			self.initial_files = ["Illustrator 2020.ai", "Project.eps"]
+			self.export_files = []
 
 
 class NamingHelper:
@@ -68,15 +71,18 @@ class NamingHelper:
 
 
 RGB_PROP = MockupsProperties("RGB", "Исходники", "jpg")
-CMYK_PROP = MockupsProperties("CMYK", "Исходники", "Печать")
+CMYK_PROP = MockupsProperties("CMYK", "Исходники", "Принт")
 
 
 if __name__ == "__main__":
 	try:
 		city_name = input("input city\project name: ")
-		projects_folder = input("input path to folder where I should create project directory: ")
+		projects_folder = input(f"input path to folder where I should create project directory or press enter to set Desktop folder {DESKTOP_FOLDER}: ")
 		CMYK_PROP.n_mockups = int(input("input number of cmyk mockups: "))
 		RGB_PROP.n_mockups = int(input("input number of rgb mockups: "))
+
+		if projects_folder == "":
+			projects_folder = DESKTOP_FOLDER
 
 		pp = ProjectProperties(city_name, projects_folder, CMYK_PROP.n_mockups, RGB_PROP.n_mockups)
 
@@ -85,6 +91,7 @@ if __name__ == "__main__":
 		nh.get_mockup_names(RGB_PROP)
 		nh.create_mockups(RGB_PROP)
 		nh.create_mockups(CMYK_PROP)
+		input()
 	except Exception as e:
 		print(e.args)
 		input()
